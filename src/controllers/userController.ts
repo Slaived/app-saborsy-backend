@@ -24,21 +24,19 @@ export const createUser = async (req:Request, res:Response):Promise<any>=>{
 
 export const updateUser = async (req:Request, res: Response):Promise<any>=>{
     try {
-        console.log(req.body);
         const {name, address, city, country} = req.body;
         const user = await User.findById(req.userId);
         if (!user){
             res.status(404)
                 .json({mesage: 'Usuario no encontrado'})
+        }
+        user!.name = name;
+        user!.address = address;
+        user!.city = city;
+        user!.country = country;
 
-            user!.name = name;
-            user!.address = address;
-            user!.city = city;
-            user!.country = country;
-
-            await user!.save();
-            res.send(user);   
-        }        
+        await user!.save();
+        res.send(user);           
     }catch (error) {
         console.log(error);
         res.status(500)
