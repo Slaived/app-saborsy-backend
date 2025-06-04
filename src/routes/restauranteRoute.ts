@@ -10,27 +10,27 @@ const storage = multer.memoryStorage();
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 5 * 1025 * 1024, //5mb
+        fileSize: 5 * 1024 * 1024, //5mb
     }
 });
 
 //Ruta para obtener los datos de un restaurante
-router.get('/',
+router.get('/', 
     jwtCheck,
-jwtParse,
-getRestaurante
+    jwtParse,
+    getRestaurante
 );
 
 //Rutas para crear el restaurante
 router.post('/',
     jwtCheck,
-    jwtParse,
+    jwtParse,    
      upload.single("imageFile"),
      validateRestauranteRequest,
      createRestaurante
 );
 
-//Ruta para actualizar un restaurante
+//Ruta para actualizDar un restaurante
 router.put('/',
     jwtCheck,
     jwtParse,

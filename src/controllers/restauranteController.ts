@@ -5,12 +5,12 @@ import cloudinary from 'cloudinary'
 import mongoose from 'mongoose';
 
 //Función para obtener los datos de un restaurante
-export const getRestaurante = async (req:Request, res:Response) =>{
+export const getRestaurante = async (req:Request, res:Response):Promise<any> =>{
     try {
         const restaurante = await Restaurante.findOne( {user:req.userId } )
         if (!restaurante){
-            res.status(404)
-                        .json({message: 'Restaurante no encontrado'})
+            return res.status(404)
+                      .json({message: 'Restaurante no encontrado'})
         }
         res.json(restaurante);        
     } catch (error) {
@@ -21,13 +21,13 @@ export const getRestaurante = async (req:Request, res:Response) =>{
 }//Fin de getTestaurante
 
 //Función para crear un restaurante
-export const createRestaurante = async (req: Request, res: Response) => {
+export const createRestaurante = async (req: Request, res: Response):Promise<any> => {
     try {
         const existingRestaurante = await Restaurante.findOne({user: req.userId});
 
         if(existingRestaurante){
-            res.status(500)
-                .json({message: 'El restaurante para este usuario ya existe'})
+            return res.status(500)
+                      .json({message: 'El restaurante para este usuario ya existe'})
         }
 
         const imageUrl = await uploadImage(req.file as Express.Multer.File);
@@ -46,12 +46,12 @@ export const createRestaurante = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error);
         res.status(500)
-        .json({message: 'Error al crear un restaurante'})       
+           .json({message: 'Error al crear un restaurante'})       
     }
 };//Fin de createRestaurante
 
 //Función para actualizar un restaurante
-export const updateRestaurante = async (req: Request, res: Response)=>{
+export const updateRestaurante = async (req: Request, res: Response):Promise<any>=>{
     try {
         let restaurante = await Restaurante.findOne( { User: req.userId } )
         if (!restaurante){
